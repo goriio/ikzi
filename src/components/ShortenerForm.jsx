@@ -103,8 +103,13 @@ export function ShortenerForm() {
       `https://short-url-webapp.herokuapp.com/shorten?url=${link}`
     );
     const data = await response.json();
-    setShortened(data.shortUrl);
-    
+
+    if (data.data) {
+      setShortened(data.data.shortUrl);
+    } else {
+      alert('Something went wrong.');
+    }
+
     /* if (data.ok) {
       setShortened(data.result.full_short_link);
     } else {
