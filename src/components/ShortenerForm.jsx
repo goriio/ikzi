@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { BiLink, BiCopy, BiCheck } from 'react-icons/bi';
 import { useState } from 'react';
 import { isUrl } from '../utils/validate';
+import { Spinner } from './Spinner';
 
 const Form = styled.form`
   width: 100%;
@@ -73,6 +74,8 @@ const Error = styled.small`
 `;
 
 const Button = styled.button`
+  display: grid;
+  place-items: center;
   width: 100%;
   padding: 0.5rem 1rem;
   font-size: 1rem;
@@ -96,8 +99,11 @@ export function ShortenerForm() {
   const [shortened, setShortened] = useState(null);
   const [hasCopied, setHasCopied] = useState(false);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const getShortenedUrl = async (link) => {
+    setLoading(true);
+
     const response = await fetch(
       //`https://api.shrtco.de/v2/shorten?url=${link}`
       `https://short-url-webapp.herokuapp.com/shorten?url=${link}`
@@ -106,6 +112,7 @@ export function ShortenerForm() {
 
     if (data.data) {
       setShortened(data.data.shortUrl);
+      console.log(data);
     } else {
       alert('Something went wrong.');
     }
@@ -115,6 +122,8 @@ export function ShortenerForm() {
     } else {
       alert('Something went wrong');
     } */
+
+    setLoading(false);
   };
 
   const makeAnother = () => {
@@ -173,11 +182,9 @@ export function ShortenerForm() {
         {error && <Error>{error}</Error>}
       </TextInput>
       {shortened ? (
-        <>
-          <Button onClick={makeAnother}>Make another</Button>
-        </>
+        <Button onClick={makeAnother}>Make another</Button>
       ) : (
-        <Button type="submit">Shorten</Button>
+        <Button type="submit">{loading ? <Spinner /> : 'Submit'}</Button>
       )}
     </Form>
   );
