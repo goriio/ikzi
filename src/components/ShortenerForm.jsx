@@ -159,6 +159,10 @@ export function ShortenerForm() {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(shortened);
     setHasCopied(true);
+
+    setTimeout(() => {
+      setHasCopied(false);
+    }, 1000);
   };
 
   return (
@@ -179,7 +183,7 @@ export function ShortenerForm() {
             onChange={handleChange}
           />
           {shortened && (
-            <InputIcon onClick={copyToClipboard}>
+            <InputIcon type="button" onClick={copyToClipboard}>
               {hasCopied ? <BiCheck /> : <BiCopy />}
             </InputIcon>
           )}
