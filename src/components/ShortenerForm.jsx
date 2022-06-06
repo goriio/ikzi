@@ -92,6 +92,10 @@ const Button = styled.button`
   &:active {
     transform: translateY(2px);
   }
+
+  &:disabled {
+    opacity: 60%;
+  }
 `;
 
 export function ShortenerForm() {
@@ -112,7 +116,6 @@ export function ShortenerForm() {
 
     if (data.data) {
       setShortened(data.data.shortUrl);
-      console.log(data);
     } else {
       alert('Something went wrong.');
     }
@@ -140,6 +143,8 @@ export function ShortenerForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (shortened) return makeAnother();
 
     if (!url) {
       return setError('Url is required.');
@@ -181,11 +186,9 @@ export function ShortenerForm() {
         </InputWrapper>
         {error && <Error>{error}</Error>}
       </TextInput>
-      {shortened ? (
-        <Button onClick={makeAnother}>Make another</Button>
-      ) : (
-        <Button type="submit">{loading ? <Spinner /> : 'Submit'}</Button>
-      )}
+      <Button type="submit" disabled={loading}>
+        {shortened ? 'Make another' : loading ? <Spinner /> : 'Submit'}
+      </Button>
     </Form>
   );
 }
