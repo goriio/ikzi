@@ -1,15 +1,20 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { GlobalStyle } from './GlobalStyle';
 import { Container } from './components/Container';
 import { ShortenerForm } from './components/ShortenerForm';
-import { GlobalStyle } from './GlobalStyle';
+import { Redirect } from './components/Redirect';
 
 function App() {
   return (
-    <div className="App">
+    <Router>
       <GlobalStyle />
       <Container>
-        <ShortenerForm />
+        <Routes>
+          <Route exact path="/" element={<ShortenerForm />} />
+          <Route path="/:urlCode" element={<Redirect />} />
+        </Routes>
       </Container>
-    </div>
+    </Router>
   );
 }
 
