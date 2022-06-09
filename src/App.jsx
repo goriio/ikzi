@@ -11,7 +11,7 @@ function App() {
       <GlobalStyle />
       <Container>
         <Routes>
-          <Route exact path="/" element={<ShortenerForm />} />
+          <Route path="/" element={<ShortenerForm />} />
           <Route path="/:urlCode" element={<Redirect />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
