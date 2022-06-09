@@ -114,7 +114,7 @@ export function ShortenerForm() {
     const data = await response.json();
 
     if (data.data) {
-      setShortened(import.meta.env.BASE_URL + data.data.urlCode);
+      setShortened(location.origin + '/' + data.data.urlCode);
     } else {
       alert('Something went wrong.');
     }
