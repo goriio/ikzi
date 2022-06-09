@@ -109,22 +109,15 @@ export function ShortenerForm() {
     setLoading(true);
 
     const response = await fetch(
-      //`https://api.shrtco.de/v2/shorten?url=${link}`
       `https://short-url-webapp.herokuapp.com/shorten?url=${link}`
     );
     const data = await response.json();
 
     if (data.data) {
-      setShortened(data.data.shortUrl);
+      setShortened(import.meta.env.BASE_URL + data.data.urlCode);
     } else {
       alert('Something went wrong.');
     }
-
-    /* if (data.ok) {
-      setShortened(data.result.full_short_link);
-    } else {
-      alert('Something went wrong');
-    } */
 
     setLoading(false);
   };
