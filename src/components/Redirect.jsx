@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { NotFound } from './NotFound';
 import { Spinner } from './Spinner';
 
 const Wrapper = styled.div`
@@ -18,25 +19,32 @@ const Text = styled.span`
 
 export function Redirect() {
   const { urlCode } = useParams();
+  const [showNotFound, setShowNotFound] = useState(false);
 
   const getUrlCodeInfo = async () => {
     const response = await fetch(
-      `https://short-url-webapp.herokuapp.com/shorten?url=${urlCode}`
+      `https://short-url-webapp.herokuapp.com/info?code=${urlCode}`
     );
 
-    const data = response.json();
+    const data = await response.json();
 
     if (data.data) {
       const { longUrl } = data.data;
       location.replace(
         longUrl.startsWith('http') ? longUrl : `http://${longUrl}`
       );
+    } else {
+      setShowNotFound(true);
     }
   };
 
   useEffect(() => {
     getUrlCodeInfo();
   }, []);
+
+  if (showNotFound) {
+    return <NotFound />;
+  }
 
   return (
     <Wrapper>
